@@ -65,7 +65,7 @@ Payload:
 Description:
 
 Takes in the details of the User to validate their ownership of the account, in the form of Json. Sends an email to the user containing a Java Web Token generated specifically for this case. 
-This token will be needed for when the user actually updates their password. The response is a String stating that the email was successfully sent to the user.
+This token will be needed for when the user actually updates their password. The response is a String stating that the email was successfully sent to the user. 
 
 Payload:
 
@@ -122,5 +122,9 @@ Some of the configurations were set up in this way for the sake of convenience. 
 elsewhere (Set as an environment variable, placed in a Secure Vault or a .env file). A local database was used instead of a cloud environment for the sake of simplicity (I have plans to transition to a free cloud environment 
 later on).
 
+Make sure to add the appropriate link in the sendEmail method in EmailTokenService to redirect the user to the page to update their password.
+
 Added code coverage across the board, to ensure that any breaking changes would be caught.
+
+
   
