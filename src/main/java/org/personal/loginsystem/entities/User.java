@@ -44,4 +44,18 @@ public class User implements UserDetails {
         userDTO.setRole(role);
         return userDTO;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        return user.getUsername().equals(username) &&
+                user.getEmail().equals(email) &&
+                user.getSecurityQuestion().equals(securityQuestion) &&
+                user.getSecurityAnswer().equals(securityAnswer) &&
+                user.getRole().equals(role);
+    }
 }

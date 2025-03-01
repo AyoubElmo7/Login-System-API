@@ -3,6 +3,7 @@ package org.personal.loginsystem.controllers;
 import jakarta.validation.Valid;
 import jakarta.validation.groups.Default;
 import org.personal.loginsystem.entities.ForgotPasswordDTO;
+import org.personal.loginsystem.entities.User;
 import org.personal.loginsystem.entities.UserDTO;
 import org.personal.loginsystem.service.UserService;
 import org.personal.loginsystem.validators.OnCreate;
@@ -41,6 +42,8 @@ public class UserController {
     public String forgotPassword(
             @RequestBody @Valid ForgotPasswordDTO forgotPasswordDTO
             ) {
+
+        System.out.println(forgotPasswordDTO);
         return userService.forgotPassword(forgotPasswordDTO.toForgotPasswordRequest());
     }
 

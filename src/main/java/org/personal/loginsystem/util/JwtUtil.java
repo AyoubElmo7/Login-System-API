@@ -20,7 +20,7 @@ public class JwtUtil {
 
     public Key getSigningKey(boolean isAuthToken) {
         String secretKey = isAuthToken ? authSecretKey : passwordSecretKey;
-        return Keys.hmacShaKeyFor(secretKey.getBytes()); // Convert the secret to a Key object
+        return Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
     public String generateToken(String usernameOrEmail, Long expirationTime, boolean isAuthToken) {

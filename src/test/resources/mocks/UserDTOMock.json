@@ -1,6 +1,6 @@
 {
   "username": "UsernameTest",
-  "password": "PasswordTest",
+  "password": "@PasswordTest",
   "email": "testing@gmail.com",
   "securityQuestion": "Testing security question",
   "securityAnswer": "Testing security answer"

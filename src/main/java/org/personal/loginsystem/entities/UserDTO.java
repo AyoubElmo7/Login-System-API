@@ -18,7 +18,7 @@ public class UserDTO {
     @Size(min = 6, message = "Username must be at least 6 characters long")
     private String username;
     @NotBlank
-    @Pattern(regexp = "^(?=.*[!@#$%^&*()_+{}:\"<>?])[A-Za-z\\d!@#$%^&*()_+{}:\"<>?]{8,}$",
+    @Pattern(groups = OnCreate.class, regexp = "^(?=.*[!@#$%^&*()_+{}:\"<>?])[A-Za-z\\d!@#$%^&*()_+{}:\"<>?]{8,}$",
             message = "Password much be at least 8 characters long, containing one special character, one upper case and one lower case letter.")
     private String password;
     @Email(groups = OnCreate.class)

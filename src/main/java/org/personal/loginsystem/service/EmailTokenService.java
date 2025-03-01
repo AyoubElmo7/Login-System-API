@@ -31,10 +31,14 @@ public class EmailTokenService {
     @Value("${emailsender.email}")
     private String EMAIL_FROM;
 
-    private final Duration TOKEN_VALIDITY = Duration.ofMinutes(3);
+    private final Duration TOKEN_VALIDITY = Duration.ofMinutes(5);
 
     public void sendEmail(String email, String subject) {
         String token = jwtUtil.generateToken(email, TOKEN_VALIDITY.toMillis(), false);
+
+        if (EMAIL_FROM == null || EMAIL_FROM.isEmpty()) {
+            throw new EmailSenderFailedException("Email sender configuration is missing");
+        }
 
         try {
             MimeMessage message = mailSender.createMimeMessage();

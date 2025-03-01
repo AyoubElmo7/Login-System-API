@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.personal.loginsystem.controllers.UserController;
+import org.personal.loginsystem.entities.ForgotPasswordDTO;
 import org.personal.loginsystem.entities.UserDTO;
 import org.personal.loginsystem.service.UserService;
 import org.springframework.core.io.ClassPathResource;
@@ -65,9 +66,43 @@ class UserControllerTest {
     void register_validAccount_returnsSuccessString() throws Exception {
         UserDTO userDTO = loadUserDTO();
 
+        when(userService.registerUser(userDTO.toUser()))
+                .thenReturn("Success");
+
         mockMvc.perform(put("/user/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userDTO)))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Success"));
+    }
+
+    @Test
+    void forgotPassword_validCredentials_returnsSuccessString() throws Exception {
+        ForgotPasswordDTO fgpasswordDTO =
+                new ForgotPasswordDTO("testing@gmail.com", "TestQuestion", "TestAnswer");
+
+        when(userService.forgotPassword(fgpasswordDTO.toForgotPasswordRequest()))
+                .thenReturn("Success");
+
+        mockMvc.perform(post("/user/forgotPassword")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(fgpasswordDTO)))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Success"));
+    }
+
+    @Test
+    void resetPassword_validCredentials_returnsSuccessString() throws Exception {
+        String password = "TestPassword";
+        String token = "TestToken";
+
+        when(userService.resetPassword(token, password))
+                .thenReturn("Success");
+
+        mockMvc.perform(post("/user/resetPassword")
+                        .param("token", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(password))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Success"));
     }
