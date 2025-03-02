@@ -116,7 +116,8 @@ emailsender.email=
 emailsender.password=
 ```
 
-## __Miscellaneous Points__
+## __Miscellaneous Points__  
+## ** __Read Before Running__ **
 
 Some of the configurations were set up in this way for the sake of convenience. For instance, in a production environment the Java Web Tokens would not be included within the application.properties file and would be stored
 elsewhere (Set as an environment variable, placed in a Secure Vault or a .env file). A local database was used instead of a cloud environment for the sake of simplicity (I have plans to transition to a free cloud environment 
