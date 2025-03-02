@@ -39,30 +39,30 @@ class EmailTokenServiceTest {
     @InjectMocks
     private EmailTokenService emailTokenService;
 
-    private String email = "test@example.com";
-    private String subject = "Password Reset Request";
-    private String token = "generated-token";
-    private final Duration TOKEN_VALIDITY = Duration.ofMinutes(5);
+    private final String email = "test@example.com";
+    private final String subject = "Password Reset Request";
+    private final String token = "generated-token";
+    private final Duration tokenDuration = Duration.ofMinutes(5);
 
     @BeforeEach
     void setUp() {
-        ReflectionTestUtils.setField(emailTokenService, "EMAIL_FROM", "noreply@example.com");
+        ReflectionTestUtils.setField(emailTokenService, "emailOrigin", "noreply@example.com");
     }
 
     @Test
     void sendEmail_emailSuccessfullySent() {
-        when(jwtUtil.generateToken(email, TOKEN_VALIDITY.toMillis(), false)).thenReturn(token);
+        when(jwtUtil.generateToken(email, tokenDuration.toMillis(), false)).thenReturn(token);
         when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
 
         emailTokenService.sendEmail(email, subject);
 
         verify(mailSender).send(mimeMessage);
-        verify(jwtUtil).generateToken(email, TOKEN_VALIDITY.toMillis(), false);
+        verify(jwtUtil).generateToken(email, tokenDuration.toMillis(), false);
     }
 
     @Test
     void sendEmail_emailSendingFails_throwsEmailSenderFailedException() {
-        when(jwtUtil.generateToken(email, TOKEN_VALIDITY.toMillis(), false)).thenReturn(token);
+        when(jwtUtil.generateToken(email, tokenDuration.toMillis(), false)).thenReturn(token);
         when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
 
         doThrow(new MailSendException("Simulated email sending failure")).when(mailSender).send(mimeMessage);
@@ -73,9 +73,9 @@ class EmailTokenServiceTest {
 
     @Test
     void sendEmail_missingEmailSenderConfig_throwsMessagingException() {
-        ReflectionTestUtils.setField(emailTokenService, "EMAIL_FROM", null);
+        ReflectionTestUtils.setField(emailTokenService, "emailOrigin", null);
 
-        when(jwtUtil.generateToken(email, TOKEN_VALIDITY.toMillis(), false)).thenReturn(token);
+        when(jwtUtil.generateToken(email, tokenDuration.toMillis(), false)).thenReturn(token);
 
         assertThrows(EmailSenderFailedException.class, () -> emailTokenService.sendEmail(email, subject));
     }

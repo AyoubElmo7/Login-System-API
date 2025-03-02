@@ -29,21 +29,21 @@ public class EmailTokenService {
     }
 
     @Value("${emailsender.email}")
-    private String EMAIL_FROM;
+    private String emailOrigin;
 
-    private final Duration TOKEN_VALIDITY = Duration.ofMinutes(5);
+    private final Duration tokenDuration = Duration.ofMinutes(5);
 
     public void sendEmail(String email, String subject) {
-        String token = jwtUtil.generateToken(email, TOKEN_VALIDITY.toMillis(), false);
+        String token = jwtUtil.generateToken(email, tokenDuration.toMillis(), false);
 
-        if (EMAIL_FROM == null || EMAIL_FROM.isEmpty()) {
+        if (emailOrigin == null || emailOrigin.isEmpty()) {
             throw new EmailSenderFailedException("Email sender configuration is missing");
         }
 
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
-            helper.setFrom(EMAIL_FROM);
+            helper.setFrom(emailOrigin);
             helper.setTo(email);
             helper.setSubject(subject);
 
